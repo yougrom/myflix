@@ -4,24 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation</title>
+    <title>API Endpoints Documentation</title>
     <link rel="icon" type="image/x-icon" href="/cf-projects/myflix/img/favicon.ico">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div>
-        <h1>API Product Overview</h1>
-        <p>The MyFlix API is a API that makes it easy to find the data you need, provides a
-            simplified data structure via JSON payload, and reduces the number of calls to a single
-            URL. The MyFlix API provides an industry standard solution to receive real-time access to premier MyFlix
-            title and name entertainment datasets.
-        </p>
+    <div class="container mt-5">
+        <h1>API Endpoints Documentation</h1>
         <p>
-            The API you create will need to be able to interact with and respond to data requests about movies or users,
-            returning the requested data to the client (which, in this case, is the “myFlix” app). These requests will
-            be handled by a server-side web framework.
+            The MyFlix API is designed following REST principles, featuring intuitive URLs, JSON-formatted responses,
+            and conventional HTTP status codes. It serves as the backend for a web application that offers users
+            detailed information on movies, directors, and genres. Additionally, it enables users to register, update
+            their personal details, and compile a list of favorite movies.
         </p>
+        <div class="responsive-table">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Business Logic</th>
+                        <th scope="col">HTTP Method</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Request Body Format</th>
+                        <th scope="col">Response Body Format</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Get all movies</td>
+                        <td>GET</td>
+                        <td>/movies</td>
+                        <td>N/A</td>
+                        <td>JSON list of movies</td>
+                    </tr>
+                    <tr>
+                        <td>Get a single movie</td>
+                        <td>GET</td>
+                        <td>/movies/{title}</td>
+                        <td>N/A</td>
+                        <td>JSON movie details</td>
+                    </tr>
+                    <tr>
+                        <td>Get genre by name</td>
+                        <td>GET</td>
+                        <td>/genres/{name}</td>
+                        <td>N/A</td>
+                        <td>JSON genre description</td>
+                    </tr>
+                    <tr>
+                        <td>Get director by name</td>
+                        <td>GET</td>
+                        <td>/directors/{name}</td>
+                        <td>N/A</td>
+                        <td>JSON director details</td>
+                    </tr>
+                    <tr>
+                        <td>User registration</td>
+                        <td>POST</td>
+                        <td>/users</td>
+                        <td>{ "username": "string", "password": "string", "email": "string", "birthday": "date" }</td>
+                        <td>Confirmation text</td>
+                    </tr>
+                    <tr>
+                        <td>Update user info</td>
+                        <td>PUT</td>
+                        <td>/users/{username}</td>
+                        <td>{ "username": "string", "password": "string", "email": "string", "birthday": "date" }</td>
+                        <td>Confirmation text</td>
+                    </tr>
+                    <tr>
+                        <td>Add to favorites</td>
+                        <td>POST</td>
+                        <td>/users/{username}/movies/{movieID}</td>
+                        <td>N/A</td>
+                        <td>Text indicating addition</td>
+                    </tr>
+                    <tr>
+                        <td>Remove from favorites</td>
+                        <td>DELETE</td>
+                        <td>/users/{username}/movies/{movieID}</td>
+                        <td>N/A</td>
+                        <td>Text indicating removal</td>
+                    </tr>
+                    <tr>
+                        <td>User deregistration</td>
+                        <td>DELETE</td>
+                        <td>/users/{username}</td>
+                        <td>N/A</td>
+                        <td>Confirmation of removal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
