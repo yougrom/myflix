@@ -1,104 +1,31 @@
 const express = require('express'),
   morgan = require('morgan'),
-  fs = require('fs'), // import built in node modules fs and path 
+  fs = require('fs'), // Import built-in node modules fs and path
   path = require('path'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
-  const app = express();
+const app = express();
 
-// set up static file serving
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/myflixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Set up static file serving
 app.use(express.static('public'));
 
-// create a write stream (in append mode)
-// a ‘log.txt’ file is created in root directory
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+// Middleware to parse JSON bodies
+app.use(bodyParser.json());
 
-// setup the logger
-app.use(morgan('combined', {stream: accessLogStream}));
+// Create a write stream (in append mode) for logging
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
 
-let movies = [
-    {   
-        id: 1,
-        title: 'Iron Man',
-        director: 'Jon Favreau',
-        releaseYear: 2008,
-        studio: 'Marvel Studios',
-        imdbRating: 7.9
-    },
-    {   
-        id: 2,
-        title: 'The Incredible Hulk',
-        director: 'Louis Leterrier',
-        releaseYear: 2008,
-        studio: 'Marvel Studios',
-        imdbRating: 6.7
-    },
-    {   
-        id: 3,
-        title: 'Iron Man 2',
-        director: 'Jon Favreau',
-        releaseYear: 2010,
-        studio: 'Marvel Studios',
-        imdbRating: 7.0
-    },
-    {   
-        id: 4,
-        title: 'Thor',
-        director: 'Kenneth Branagh',
-        releaseYear: 2011,
-        studio: 'Marvel Studios',
-        imdbRating: 7.0
-    },
-    {   
-        id: 5,
-        title: 'Captain America: The First Avenger',
-        director: 'Joe Johnston',
-        releaseYear: 2011,
-        studio: 'Marvel Studios',
-        imdbRating: 6.9
-    },
-    {   
-        id: 6,
-        title: 'The Avengers',
-        director: 'Joss Whedon',
-        releaseYear: 2012,
-        studio: 'Marvel Studios',
-        imdbRating: 8.0
-    },
-    {
-        id: 7,
-        title: 'Iron Man 3',
-        director: 'Shane Black',
-        releaseYear: 2013,
-        studio: 'Marvel Studios',
-        imdbRating: 7.2
-    },
-    {
-        id: 8,
-        title: 'Thor: The Dark World',
-        director: 'Alan Taylor',
-        releaseYear: 2013,
-        studio: 'Marvel Studios',
-        imdbRating: 6.9
-    },
-    {   
-        id: 9,
-        title: 'Captain America: The Winter Soldier',
-        director: 'Anthony and Joe Russo',
-        releaseYear: 2014,
-        studio: 'Marvel Studios',
-        imdbRating: 7.7
-    },
-    {
-        id: 10,
-        title: 'Guardians of the Galaxy',
-        director: 'James Gunn',
-        releaseYear: 2014,
-        studio: 'Marvel Studios',
-        imdbRating: 8.0
-    }
-];
+// Setup the logger
+app.use(morgan('combined', { stream: accessLogStream }));
 
 // Endpoint Gets the list of data about ALL movies
 app.get('/movies', (req, res) => {
@@ -118,7 +45,7 @@ app.get('/movies/:title', (req, res) => {
 // Endpoint to add data for a new movie to our list of movies
 app.post('/movies', (req, res) => {
     let newMovie = req.body;
-  
+
     if (!newMovie.title) {
       const message = 'Missing title in request body';
       res.status(400).send(message);
@@ -142,16 +69,92 @@ app.delete('/movies/:id', (req, res) => {
 
 // GET requests
 app.get('/', (req, res) => {
-    res.send('Welcome to my movie app!');   
+  res.send('Welcome to my movie app!');
 });
 
-// listen for requests
+// Add a user
+app.post('/users', async (req, res) => {
+  try {
+    let user = await Users.findOne({ Username: req.body.Username });
+    if (user) {
+      return res.status(400).send(req.body.Username + ' already exists');
+    } else {
+      let newUser = await Users.create({
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      });
+      res.status(201).json(newUser);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+// Update a user's info, by username
+app.put('/users/:Username', async (req, res) => {
+  try {
+    let updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username }, {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    }, { new: true }); // This line makes sure that the updated document is returned
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+// Listen for requests
 app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
+  console.log('Your app is listening on port 8080.');
 });
 
-// error-handling middleware functions
+// Error-handling middleware functions
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
+// 1. Get All Movies
+app.get('/movies', (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(200).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
+
+// 2. Get a Single Movie by Title
+  app.get('/movies/:title', (req, res) => {
+    Movies.findOne({ title: req.params.title })
+      .then((movie) => {
+        res.json(movie);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
+  
+
+  // 
+  app.get('/movies/genres/:name', (req, res) => {
+  Movies.find({ 'genre.name': req.params.name })
+  .then((movies) => {
+    res.json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });

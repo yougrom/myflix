@@ -31,7 +31,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Existing endpoints -->
                     <tr>
                         <td>Get all movies</td>
                         <td>GET</td>
@@ -39,70 +38,61 @@
                         <td>N/A</td>
                         <td>JSON list of movies</td>
                     </tr>
-                    <!-- Existing and new endpoints -->
-                    <!-- Add new endpoints below -->
                     <tr>
-                        <td>Login</td>
+                        <td>Get a single movie</td>
+                        <td>GET</td>
+                        <td>/movies/{title}</td>
+                        <td>N/A</td>
+                        <td>JSON movie details</td>
+                    </tr>
+                    <tr>
+                        <td>Get genre by name</td>
+                        <td>GET</td>
+                        <td>/genres/{name}</td>
+                        <td>N/A</td>
+                        <td>JSON genre description</td>
+                    </tr>
+                    <tr>
+                        <td>Get director by name</td>
+                        <td>GET</td>
+                        <td>/directors/{name}</td>
+                        <td>N/A</td>
+                        <td>JSON director details</td>
+                    </tr>
+                    <tr>
+                        <td>User registration</td>
                         <td>POST</td>
-                        <td>/login</td>
-                        <td>{ "username": "string", "password": "string" }</td>
-                        <td>Token or session info</td>
+                        <td>/users</td>
+                        <td>{ "username": "string", "password": "string", "email": "string", "birthday": "date" }</td>
+                        <td>Confirmation text</td>
                     </tr>
                     <tr>
-                        <td>Logout</td>
+                        <td>Update user info</td>
+                        <td>PUT</td>
+                        <td>/users/{username}</td>
+                        <td>{ "username": "string", "password": "string", "email": "string", "birthday": "date" }</td>
+                        <td>Confirmation text</td>
+                    </tr>
+                    <tr>
+                        <td>Add to favorites</td>
                         <td>POST</td>
-                        <td>/logout</td>
+                        <td>/users/{username}/movies/{movieID}</td>
                         <td>N/A</td>
-                        <td>Confirmation text</td>
+                        <td>Text indicating addition</td>
                     </tr>
                     <tr>
-                        <td>Get User Profile</td>
-                        <td>GET</td>
-                        <td>/users/{username}/profile</td>
+                        <td>Remove from favorites</td>
+                        <td>DELETE</td>
+                        <td>/users/{username}/movies/{movieID}</td>
                         <td>N/A</td>
-                        <td>JSON user details</td>
+                        <td>Text indicating removal</td>
                     </tr>
                     <tr>
-                        <td>Get Favorite Movies</td>
-                        <td>GET</td>
-                        <td>/users/{username}/movies</td>
+                        <td>User deregistration</td>
+                        <td>DELETE</td>
+                        <td>/users/{username}</td>
                         <td>N/A</td>
-                        <td>JSON list of favorite movies</td>
-                    </tr>
-                    <tr>
-                        <td>Update User Email</td>
-                        <td>PUT</td>
-                        <td>/users/{username}/email</td>
-                        <td>{ "email": "newemail@example.com" }</td>
-                        <td>Confirmation text</td>
-                    </tr>
-                    <tr>
-                        <td>Update User Password</td>
-                        <td>PUT</td>
-                        <td>/users/{username}/password</td>
-                        <td>{ "password": "newpassword" }</td>
-                        <td>Confirmation text</td>
-                    </tr>
-                    <tr>
-                        <td>Search Movies</td>
-                        <td>GET</td>
-                        <td>/movies/search?query={query}</td>
-                        <td>N/A</td>
-                        <td>JSON list of movies matching query</td>
-                    </tr>
-                    <tr>
-                        <td>Get All Directors</td>
-                        <td>GET</td>
-                        <td>/directors</td>
-                        <td>N/A</td>
-                        <td>JSON list of directors</td>
-                    </tr>
-                    <tr>
-                        <td>Get All Genres</td>
-                        <td>GET</td>
-                        <td>/genres</td>
-                        <td>N/A</td>
-                        <td>JSON list of genres</td>
+                        <td>Confirmation of removal</td>
                     </tr>
                 </tbody>
             </table>
