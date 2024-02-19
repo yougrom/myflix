@@ -1,20 +1,11 @@
 const mongoose = require('mongoose');
 
-
 // Define the Movie Schema
 let movieSchema = mongoose.Schema ({
     Title: {type: String, required: true},
     Description: {type: String, required: true},
-    Genre: {
-        Name: String,
-        Description: String
-      },
-    Director: {
-    Name: String,
-    Bio: String,
-    Birth: String,
-    Death: String
-    },
+    Genre: {Name: String, Description: String},
+    Director: {Name: String, Bio: String, Birth: String, Death: String},
     ImagePath: String,
     Featured: Boolean
 });
@@ -33,4 +24,3 @@ let User = mongoose.model('User', userSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;
-

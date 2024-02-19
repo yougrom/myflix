@@ -6,109 +6,270 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Endpoints Documentation</title>
     <link rel="icon" type="image/x-icon" href="/cf-projects/myflix/img/favicon.ico">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1>API Endpoints Documentation</h1>
-        <p>
+        <h1 class="mb-3">API Endpoints Documentation</h1>
+        <p class="mb-3">
             The MyFlix API is designed following REST principles, featuring intuitive URLs, JSON-formatted responses,
             and conventional HTTP status codes. It serves as the backend for a web application that offers users
             detailed information on movies, directors, and genres. Additionally, it enables users to register, update
             their personal details, and compile a list of favorite movies.
         </p>
-        <div class="responsive-table">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Business Logic</th>
-                        <th scope="col">HTTP Method</th>
-                        <th scope="col">URL</th>
-                        <th scope="col">Request Body Format</th>
-                        <th scope="col">Response Body Format</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Existing endpoints -->
-                    <tr>
-                        <td>Get all movies</td>
-                        <td>GET</td>
-                        <td>/movies</td>
-                        <td>N/A</td>
-                        <td>JSON list of movies</td>
-                    </tr>
-                    <!-- Existing and new endpoints -->
-                    <!-- Add new endpoints below -->
-                    <tr>
-                        <td>Login</td>
-                        <td>POST</td>
-                        <td>/login</td>
-                        <td>{ "username": "string", "password": "string" }</td>
-                        <td>Token or session info</td>
-                    </tr>
-                    <tr>
-                        <td>Logout</td>
-                        <td>POST</td>
-                        <td>/logout</td>
-                        <td>N/A</td>
-                        <td>Confirmation text</td>
-                    </tr>
-                    <tr>
-                        <td>Get User Profile</td>
-                        <td>GET</td>
-                        <td>/users/{username}/profile</td>
-                        <td>N/A</td>
-                        <td>JSON user details</td>
-                    </tr>
-                    <tr>
-                        <td>Get Favorite Movies</td>
-                        <td>GET</td>
-                        <td>/users/{username}/movies</td>
-                        <td>N/A</td>
-                        <td>JSON list of favorite movies</td>
-                    </tr>
-                    <tr>
-                        <td>Update User Email</td>
-                        <td>PUT</td>
-                        <td>/users/{username}/email</td>
-                        <td>{ "email": "newemail@example.com" }</td>
-                        <td>Confirmation text</td>
-                    </tr>
-                    <tr>
-                        <td>Update User Password</td>
-                        <td>PUT</td>
-                        <td>/users/{username}/password</td>
-                        <td>{ "password": "newpassword" }</td>
-                        <td>Confirmation text</td>
-                    </tr>
-                    <tr>
-                        <td>Search Movies</td>
-                        <td>GET</td>
-                        <td>/movies/search?query={query}</td>
-                        <td>N/A</td>
-                        <td>JSON list of movies matching query</td>
-                    </tr>
-                    <tr>
-                        <td>Get All Directors</td>
-                        <td>GET</td>
-                        <td>/directors</td>
-                        <td>N/A</td>
-                        <td>JSON list of directors</td>
-                    </tr>
-                    <tr>
-                        <td>Get All Genres</td>
-                        <td>GET</td>
-                        <td>/genres</td>
-                        <td>N/A</td>
-                        <td>JSON list of genres</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+        <h3 class="mb-3">1. Get All Movies (GET /movies)</h3>
+        <p class="mb-3"><strong>Description:</strong> This method retrieves a list of all movies in the database.</p>
+        <p class="mb-3"><strong>Request Format:</strong> No request body required.</p>
+        <p class="mb-3"><strong>Response Format:</strong> An array of movie objects. Each object contains title,
+            description, genre,
+            director, image URL, and featured status.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /movies
+        Response: [
+        {
+            "title": "Movie Title 1",
+            "description": "Description 1",
+            "genre": "Genre 1",
+            "director": "Director 1",
+            "imageUrl": "http://example.com/image1.jpg",
+            "featured": false
+        },
+            ...
+        ]
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">2. Get Movie by Title (GET /movies/:title)</h3>
+        <p class="mb-3"><strong>Description:</strong> Retrieves detailed information about a single movie by its title.
+        </p>
+        <p class="mb-3"><strong>Request Format:</strong> Title of the movie in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A movie object containing title, description, genre, director,
+            image URL, and featured status.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /movies/The Matrix
+        Response: {
+            "title": "The Matrix",
+            "description": "Description of The Matrix",
+            "genre": "Action",
+            "director": "Wachowski Brothers",
+            "imageUrl": "http://example.com/matrix.jpg",
+            "featured": true
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">3. API Base Route (GET /)</h3>
+        <p class="mb-3"><strong>Description:</strong> Displays a welcome message or basic information about the API.</p>
+        <p class="mb-3"><strong>Request Format:</strong> No request body required.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A simple message or JSON object with basic API information.
+        </p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /
+        Response: {
+            "message": "Welcome to the MyFlix API!"
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">4. Get Users (GET /users)</h3>
+        <p class="mb-3"><strong>Description:</strong> Returns a list of all registered users.</p>
+        <p class="mb-3"><strong>Request Format:</strong> No request body required.</p>
+        <p class="mb-3"><strong>Response Format:</strong> An array of user objects.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /users
+        Response: [
+            {
+                "username": "user1",
+                "email": "user1@example.com",
+                ...
+            },
+            ...
+        ]
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">5. Get User by Username (GET
+            /users/:Username)</h3>
+        <p class="mb-3"><strong>Description:</strong> Returns data about a user by username.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Username in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A user object.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /users/user1
+        Response: {
+            "username": "user1",
+            "email": "user1@example.com",
+            ...
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">6. Add New Movie (POST /movies)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows for adding a new movie to the database.</p>
+        <p class="mb-3"><strong>Request Format:</strong> JSON object with movie's details including title, description,
+            genre,
+            director,
+            image URL, and featured status.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message with the added movie's details.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        POST /movies
+        Request: {
+            "title": "New Movie",
+            "description": "Description of New Movie",
+            "genre": "Genre of New Movie",
+            "director": "Director of New Movie",
+            "imageUrl": "http://example.com/newmovie.jpg",
+            "featured": false
+        }
+        Response: {
+            "message": "Movie successfully added",
+            "movie": {
+                "title": "New Movie",
+                "description": "Description of New Movie",
+                ...
+            }
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">7. Register New User (POST /users)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows new users to register.</p>
+        <p class="mb-3"><strong>Request Format:</strong> JSON object with new user's details including username,
+            password, email, and
+            date of
+            birth.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message with the registered user's details.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        POST /users
+        Request: {
+            "username": "newuser",
+            "password": "password123",
+            "email": "newuser@example.com",
+            "dateOfBirth": "1990-01-01"
+        }
+        Response: {
+            "message": "User successfully registered",
+            "user": {
+                "username": "newuser",
+                "email": "newuser@example.com",
+                "dateOfBirth": "1990-01-01"
+            }
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">8. Add Movie to User's Favorites (POST
+            /users/:Username/movies/:MovieID)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows a user to add a movie to their list of favorites.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Username and MovieID in the URL parameters.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message with updated favorites list.</p>
+        <p><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        POST /users/johndoe/movies/12345
+        Response: {
+            "message": "Movie added to favorites",
+            "favorites": ["12345", ...]
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">9. Update User Information (PUT
+            /users/:Username)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows users to update their information.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Username in the URL parameter and JSON object with updated user
+            details.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message with updated user details.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        PUT /users/johndoe
+        Request: {
+            "email": "newemail@example.com",
+            "dateOfBirth": "1985-02-15"
+        }
+        Response: {
+            "message": "User information updated",
+            "user": {
+                "username": "johndoe",
+                "email": "newemail@example.com",
+                "dateOfBirth": "1985-02-15"
+            }
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">10. Delete Movie (DELETE /movies/:id)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows deletion of a movie from the database.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Movie ID in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message indicating the deletion of the movie.
+        </p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        DELETE /movies/12345
+        Response: {
+            "message": "Movie successfully deleted"
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">11. Delete User by Username (DELETE /users/:Username)</h3>
+        <p class="mb-3"><strong>Description:</strong> Deletes a user from the database by their username.</p>
+        <p class="mb-3"><strong>Request Format:</strong> The username of the user to be deleted, passed as a URL
+            parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message indicating the result of the deletion
+            operation.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+            DELETE /users/johndoe
+            Response: {
+                "message": "johndoe was deleted"
+            }
+            </pre>
+        <p>If the user with the specified username does not exist, a 400 error message is returned:</p>
+        <pre class="bg-light p-3">
+            DELETE /users/johndoe
+            Response: {
+                "message": "johndoe was not found"
+            }
+            </pre>
+        <p>In case of server error, a 500 error message is returned:</p>
+        <pre class="bg-light p-3">
+            DELETE /users/johndoe
+            Response: {
+                "message": "Error: [error details]"
+            }
+            </pre>
+        </p>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <footer class="main-footer"></footer>
 </body>
 
 </html>

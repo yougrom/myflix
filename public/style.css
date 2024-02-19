@@ -1,3 +1,19 @@
 .responsive-table {
   overflow-x: auto;
 }
+
+hr {
+  margin: 40px 100px;
+}
+
+.main-footer {
+  margin-top: 100px;
+}
+
+p {
+  color: rgb(98, 98, 98);
+}
+
+pre {
+  border: 1px solid #cccccc;
+}
