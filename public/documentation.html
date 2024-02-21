@@ -24,20 +24,20 @@
         <h3 class="mb-3">1. Get All Movies (GET /movies)</h3>
         <p class="mb-3"><strong>Description:</strong> This method retrieves a list of all movies in the database.</p>
         <p class="mb-3"><strong>Request Format:</strong> No request body required.</p>
-        <p class="mb-3"><strong>Response Format:</strong> An array of movie objects. Each object contains title,
-            description, genre,
-            director, image URL, and featured status.</p>
+        <p class="mb-3"><strong>Response Format:</strong> An array of movie objects. Each object contains id, title,
+            description, genre, director, image URL, and featured status.</p>
         <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
         GET /movies
         Response: [
-        {
-            "title": "Movie Title 1",
-            "description": "Description 1",
-            "genre": "Genre 1",
-            "director": "Director 1",
-            "imageUrl": "http://example.com/image1.jpg",
-            "featured": false
+        {   
+            "_id": "...",
+            "Title": "The Matrix",
+            "Description": "Description of The Matrix",
+            "Genre": "Genre",
+            "Director": "Director Name",
+            "ImagePath": "http://example.com/image1.jpg",
+            "Featured": false
         },
             ...
         ]
@@ -53,14 +53,22 @@
             image URL, and featured status.</p>
         <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
-        GET /movies/The Matrix
+        GET /movies/The%20Matrix
         Response: {
-            "title": "The Matrix",
-            "description": "Description of The Matrix",
-            "genre": "Action",
-            "director": "Wachowski Brothers",
-            "imageUrl": "http://example.com/matrix.jpg",
-            "featured": true
+            "Genre": {
+                "Name": "Science Fiction",
+                "Description": "Description of the Genre"
+            },
+            "Director": {
+                "Name": "Wachowski Brothers",
+                "Bio": "Information about filmmaker",
+                "Birth": "1965-01-01"
+            },
+            "_id": "...",
+            "Title": "The Matrix",
+            "Description": "Description of The Matrix",
+            "ImagePath": "the_matrix.png",
+            "Featured": true
         }
         </pre>
         </p>
@@ -75,7 +83,7 @@
         <pre class="bg-light p-3">
         GET /
         Response: {
-            "message": "Welcome to the MyFlix API!"
+            "message": "Welcome to my movie app!"
         }
         </pre>
         </p>
@@ -89,11 +97,13 @@
         <pre class="bg-light p-3">
         GET /users
         Response: [
-            {
-                "username": "user1",
-                "email": "user1@example.com",
-                ...
-            },
+        {
+            "_id": "...",
+            "username": "user",
+            "email": "user@example.com",
+            "birthday": "...",
+            "favoriteMovies": ["..."]
+        },
             ...
         ]
         </pre>
@@ -109,6 +119,7 @@
         <pre class="bg-light p-3">
         GET /users/user1
         Response: {
+            "_id": "...",
             "username": "user1",
             "email": "user1@example.com",
             ...
@@ -120,29 +131,38 @@
         <h3 class="mb-3">6. Add New Movie (POST /movies)</h3>
         <p class="mb-3"><strong>Description:</strong> Allows for adding a new movie to the database.</p>
         <p class="mb-3"><strong>Request Format:</strong> JSON object with movie's details including title, description,
-            genre,
-            director,
-            image URL, and featured status.</p>
+            Genre,
+            Director,
+            Image Path, and featured status.</p>
         <p class="mb-3"><strong>Response Format:</strong> A confirmation message with the added movie's details.</p>
         <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
         POST /movies
         Request: {
-            "title": "New Movie",
-            "description": "Description of New Movie",
-            "genre": "Genre of New Movie",
-            "director": "Director of New Movie",
-            "imageUrl": "http://example.com/newmovie.jpg",
-            "featured": false
+            "Genre": {
+                "Name": "Name of the Genre",
+                "Description": "Genre description"
+            },
+            "Director": {
+                "Name": "Director of New Movie",
+                "Bio": "Director bio here.",
+                "Birth": "1970-01-01"
+            },
+            "Title": "New Movie",
+            "Description": "Description of New Movie",
+            "ImagePath": "newmovie.png",
+            "Featured": true
         }
+
         Response: {
-            "message": "Movie successfully added",
-            "movie": {
-                "title": "New Movie",
-                "description": "Description of New Movie",
-                ...
-            }
+            Genre": {
+                "Name": "Name of the Genre",
+                "Description": "Genre description"
+            },
+            ...
         }
+
+
         </pre>
         </p>
         <hr>
@@ -158,19 +178,18 @@
         <pre class="bg-light p-3">
         POST /users
         Request: {
-            "username": "newuser",
+            "username": "new user name",
             "password": "password123",
             "email": "newuser@example.com",
-            "dateOfBirth": "1990-01-01"
+            "dateOfBirth": "1987-01-01"
         }
         Response: {
-            "message": "User successfully registered",
-            "user": {
-                "username": "newuser",
-                "email": "newuser@example.com",
-                "dateOfBirth": "1990-01-01"
-            }
+            "_id": "...",
+            "username": "new user name",
+            "password": "password123",
+            ...
         }
+        
         </pre>
         </p>
         <hr>
@@ -182,10 +201,11 @@
         <p class="mb-3"><strong>Response Format:</strong> A confirmation message with updated favorites list.</p>
         <p><strong>Example:</strong>
         <pre class="bg-light p-3">
-        POST /users/johndoe/movies/12345
+        POST /users/john%20doe/movies/12g345...
         Response: {
-            "message": "Movie added to favorites",
-            "favorites": ["12345", ...]
+            ...
+            "favoriteMovies": ["12g345...", ...],
+            ...
         }
         </pre>
         </p>
@@ -201,31 +221,34 @@
         <pre class="bg-light p-3">
         PUT /users/johndoe
         Request: {
+            "username": "new user name",
             "email": "newemail@example.com",
-            "dateOfBirth": "1985-02-15"
+            "birthday": "1966-06-26",
         }
+
         Response: {
-            "message": "User information updated",
-            "user": {
-                "username": "johndoe",
-                "email": "newemail@example.com",
-                "dateOfBirth": "1985-02-15"
-            }
+            "_id": "...",
+            "username": "new user updated",
+            "email": "email_updated@example.com",
+            "birthday": "1966-06-26",
+            "favoriteMovies": ["..."]
         }
         </pre>
         </p>
         <hr>
 
-        <h3 class="mb-3">10. Delete Movie (DELETE /movies/:id)</h3>
-        <p class="mb-3"><strong>Description:</strong> Allows deletion of a movie from the database.</p>
-        <p class="mb-3"><strong>Request Format:</strong> Movie ID in the URL parameter.</p>
-        <p class="mb-3"><strong>Response Format:</strong> A confirmation message indicating the deletion of the movie.
+        <h3 class="mb-3">10. Delete a Movie from User's Favorite List (DELETE /users/:username/favoriteMovies/:_id)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows users to delete a movie from their favorite movies list.
         </p>
+        <p class="mb-3"><strong>Request Format:</strong> Username and movie ID in the URL parameters.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message indicating the movie has been removed
+            from the favorites list.</p>
         <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
-        DELETE /movies/12345
+        DELETE /users/johndoe/favoriteMovies/12g345...
+        
         Response: {
-            "message": "Movie successfully deleted"
+            "message": "Movie was removed from favorites"
         }
         </pre>
         </p>
@@ -244,20 +267,64 @@
                 "message": "johndoe was deleted"
             }
             </pre>
-        <p>If the user with the specified username does not exist, a 400 error message is returned:</p>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">12. Delete Movie (DELETE /movies/:id)</h3>
+        <p class="mb-3"><strong>Description:</strong> Allows deletion of a movie from the database.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Movie ID in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> A confirmation message indicating the deletion of the movie.
+        </p>
+        <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
-            DELETE /users/johndoe
-            Response: {
-                "message": "johndoe was not found"
-            }
-            </pre>
-        <p>In case of server error, a 500 error message is returned:</p>
+        DELETE /movies/123g45...
+        Response: {
+            "message": "Movie was deleted"
+        }
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">13. Get Movies by Genre (GET /movies/Genre/:Name)</h3>
+        <p class="mb-3"><strong>Description:</strong> Fetches a list of movies belonging to a specified genre.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Genre name in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> JSON array containing movies that match the specified genre.
+        </p>
+        <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
-            DELETE /users/johndoe
-            Response: {
-                "message": "Error: [error details]"
-            }
-            </pre>
+        GET /movies/Genre/Genre%20Name
+        Response: [{
+            "Genre": {
+                "Name": "Genre Name",
+                "Description": "..."
+            },
+            "Director": {
+                ...
+            },
+            "_id": "...",
+            "Title": "Movie Title",
+            ...
+        },{ ... }]
+        </pre>
+        </p>
+        <hr>
+
+        <h3 class="mb-3">14. Get Data About a Director by Name (GET /movies/Director/:Name)</h3>
+        <p class="mb-3"><strong>Description:</strong> Retrieves detailed information about a director, including their
+            biography, birth year, and death year (if applicable), based on the director's name.</p>
+        <p class="mb-3"><strong>Request Format:</strong> Director's name in the URL parameter.</p>
+        <p class="mb-3"><strong>Response Format:</strong> JSON object containing the director's details.</p>
+        <p class="mb-3"><strong>Example:</strong>
+        <pre class="bg-light p-3">
+        GET /movies/Director/Steven%20Spielberg
+
+        Response: {
+            "Name": "Steven Spielberg",
+            "Bio": "Steven Allan Spielberg is an American film director, producer, and screenwriter...",
+            "Birth": "1946-12-18",
+            "Death": null
+        }
+        </pre>
         </p>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
