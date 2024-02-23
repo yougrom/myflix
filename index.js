@@ -85,9 +85,9 @@ app.get('/users', /**passport.authenticate('jwt', {session: false}),*/ async (re
 });
 
 // 5. GET a user by username
-app.get('/users/:username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
   try {
-    const user = await Users.findOne({ username: req.params.username });
+    const user = await Users.findOne({ Username: req.params.Username });
     if (user) {
       res.json(user);
     } else {
@@ -112,18 +112,19 @@ app.post('/movies', passport.authenticate('jwt', {session: false}), (req, res) =
 });
 
 // 7. Register New User (POST /users)
-app.post('/users', async (req, res) => {
-  await Users.findOne({ username: req.body.username })
+app.post('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.username + 'already exists');
+        return res.status(400).send(req.body.Username + 'already exists');
       } else {
         Users
           .create({
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email,
-            birthday: req.body.birthday
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+            Death: req.body.Death
           })
           .then((user) =>{res.status(201).json(user) })
         .catch((error) => {
@@ -139,11 +140,11 @@ app.post('/users', async (req, res) => {
 });
 
 // 8. Add a movie to a user's list of favorites
-app.post('/users/:username/movies/:_id', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post('/users/:Username/movies/:_id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   try {
     const updatedUser = await Users.findOneAndUpdate(
-      { username: req.params.username },
-      { $push: { favoriteMovies: req.params._id } },
+      { Username: req.params.Username },
+      { $push: { FavoriteMovies: req.params._id } },
       { new: true } // This line ensures that the updated document is returned
     );
 
@@ -158,15 +159,16 @@ app.post('/users/:username/movies/:_id', passport.authenticate('jwt', {session: 
   }
 });
 
-// 9. Update a user's info, by username
-app.put('/users/:username', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  await Users.findOneAndUpdate({ username: req.params.username }, 
+// 9. PUT Update a user's info, by username
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $set:
       {
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        birthday: req.body.birthday
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+        Death: req.body.Death
       }
   },
   { new: true }) // This line makes sure that the updated document is returned
@@ -180,11 +182,11 @@ app.put('/users/:username', passport.authenticate('jwt', {session: false}), asyn
 });
 
 // 10. DELETE a Movie from User's Favorite List by ID
-app.delete('/users/:username/favoriteMovies/:_id', passport.authenticate('jwt', {session: false}), (req, res) => {
-  const { username, _id } = req.params;
+app.delete('/users/:Username/FavoriteMovies/:_id', passport.authenticate('jwt', {session: false}), (req, res) => {
+  const { Username, _id } = req.params;
 
-  // Find user by username
-  Users.findOne({ username: username })
+  // Find user by Username
+  Users.findOne({ Username: Username })
     .then(user => {
       if (!user) {
         res.status(404).send('User not found');
@@ -192,7 +194,7 @@ app.delete('/users/:username/favoriteMovies/:_id', passport.authenticate('jwt', 
       }
 
       // Checking if the movie is in the favorites list
-      if (!user.favoriteMovies.includes(_id)) {
+      if (!user.FavoriteMovies.includes(_id)) {
         res.status(404).send('Movie not found in favorites');
         return;
       }
@@ -200,7 +202,7 @@ app.delete('/users/:username/favoriteMovies/:_id', passport.authenticate('jwt', 
       // Update the user by removing the movie from the favorites list
       Users.updateOne(
         { _id: user._id },
-        { $pull: { favoriteMovies: _id } }
+        { $pull: { FavoriteMovies: _id } }
       )
       .then(() => {
         res.status(200).send('Movie was removed from favorites');
@@ -218,14 +220,14 @@ app.delete('/users/:username/favoriteMovies/:_id', passport.authenticate('jwt', 
 });
 
 // 11. DELETE a user by username
-app.delete('/users/:username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
   try {
-    const user = await Users.findOneAndDelete({ username: req.params.username });
+    const user = await Users.findOneAndDelete({ Username: req.params.Username });
 
     if (!user) {
-      res.status(400).send(req.params.username + ' was not found');
+      res.status(400).send(req.params.Username + ' was not found');
     } else {
-      res.status(200).send(req.params.username + ' was deleted.');
+      res.status(200).send(req.params.Username + ' was deleted.');
     }
   } catch (err) {
     console.error(err);

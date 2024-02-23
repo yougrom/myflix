@@ -99,10 +99,10 @@
         Response: [
         {
             "_id": "...",
-            "username": "user",
-            "email": "user@example.com",
-            "birthday": "...",
-            "favoriteMovies": ["..."]
+            "Username": "user",
+            "Email": "user@example.com",
+            "Birthday": "...",
+            "FavoriteMovies": ["..."]
         },
             ...
         ]
@@ -120,8 +120,8 @@
         GET /users/user1
         Response: {
             "_id": "...",
-            "username": "user1",
-            "email": "user1@example.com",
+            "Username": "user1",
+            "Email": "user1@example.com",
             ...
         }
         </pre>
@@ -178,15 +178,16 @@
         <pre class="bg-light p-3">
         POST /users
         Request: {
-            "username": "new user name",
-            "password": "password123",
-            "email": "newuser@example.com",
-            "dateOfBirth": "1987-01-01"
+            "Username": "new user name",
+            "Password": "password123",
+            "Email": "newuser@example.com",
+            "Birthday": "1987-01-01",
+            "Death": "2007-01-01"
         }
         Response: {
             "_id": "...",
-            "username": "new user name",
-            "password": "password123",
+            "Username": "new user name",
+            "Password": "password123",
             ...
         }
         
@@ -204,7 +205,7 @@
         POST /users/john%20doe/movies/12g345...
         Response: {
             ...
-            "favoriteMovies": ["12g345...", ...],
+            "FavoriteMovies": ["12g345...", ...],
             ...
         }
         </pre>
@@ -221,17 +222,17 @@
         <pre class="bg-light p-3">
         PUT /users/johndoe
         Request: {
-            "username": "new user name",
-            "email": "newemail@example.com",
-            "birthday": "1966-06-26",
+            "Username": "new user name",
+            "Email": "newemail@example.com",
+            "Birthday": "1966-06-26",
         }
 
         Response: {
             "_id": "...",
-            "username": "new user updated",
-            "email": "email_updated@example.com",
-            "birthday": "1966-06-26",
-            "favoriteMovies": ["..."]
+            "Username": "new user updated",
+            "Email": "email_updated@example.com",
+            "Birthday": "1966-06-26",
+            "FavoriteMovies": ["..."]
         }
         </pre>
         </p>
@@ -245,7 +246,7 @@
             from the favorites list.</p>
         <p class="mb-3"><strong>Example:</strong>
         <pre class="bg-light p-3">
-        DELETE /users/johndoe/favoriteMovies/12g345...
+        DELETE /users/johndoe/FavoriteMovies/12g345...
         
         Response: {
             "message": "Movie was removed from favorites"
