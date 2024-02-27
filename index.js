@@ -21,7 +21,10 @@ const Users = Models.User;
 // connects to local database. swap with .connect function below if needed.
 // mongoose.connect('mongodb://localhost:27017/myflixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-//connects to MongoDB Atlas database
+// connects to MongoDB Atlas database
+// mongoose.connect('mongodb+srv://myFlixDBgrom:z48PEgbuWuMsBMHN@cluster0.neomxam.mongodb.net/myFlixDBgrom?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// connects to MongoDB Atlas database
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Create a write stream (in append mode)
