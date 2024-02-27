@@ -336,7 +336,8 @@ app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
 
-// Error-handling middleware functions
+
+// Error-handling middleware funcls
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
