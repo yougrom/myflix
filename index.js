@@ -77,7 +77,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), async 
 });
 
 // 3. Default text response when at /
-app.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/', (req, res) => {
   res.send('Welcome to my movie app!');   
 });
 
@@ -197,12 +197,13 @@ app.put('/users/:Username',
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-
+  
+  let hashedPassword = Users.hashPassword(req.body.Password);
   await Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $set:
       {
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday,
         Death: req.body.Death
