@@ -46,14 +46,13 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-
 // Endpoints ==================================================================================================
 
 // 1. GET the list of data about ALL movies
 app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.find()
       .then(movies => {
-        res.json(movies); // Возвращает данные всех фильмов из базы данных
+        res.json(movies); // Returns data for all movies in the database
       })
       .catch(error => {
         console.error(error);
@@ -82,7 +81,7 @@ app.get('/', (req, res) => {
 });
 
 // 4. GET all users
-app.get('/users', /**passport.authenticate('jwt', {session: false}),*/ async (req, res) => {
+app.get('/users', async (req, res) => {
   await Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -197,7 +196,7 @@ app.put('/users/:Username',
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-  
+
   let hashedPassword = Users.hashPassword(req.body.Password);
   await Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $set:

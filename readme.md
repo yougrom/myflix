@@ -6,6 +6,8 @@ The API is designed following REST principles, providing intuitive URLs, respons
 
 It's specifically crafted to provide comprehensive information about movies and robust user management features.
 
+[I've successfully connected my Heroku application to my MongoDB Atlas database by updating the connection URI in the "index.js" file with environment variables, pushed the changes to Heroku, and confirmed the app loads and connects to my database.](https://dry-ridge-94435-1154c64a056a.herokuapp.com)
+
 ## Key Features
 
 - **Mongoose Models:** Implemented for Movies and Users schemas, facilitating efficient data structuring and manipulation.
