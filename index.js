@@ -49,7 +49,7 @@ require('./passport');
 // Endpoints ==================================================================================================
 
 // 1. GET the list of data about ALL movies
-app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/movies', /*passport.authenticate('jwt', {session: false}),*/ (req, res) => {
     Movies.find()
       .then(movies => {
         res.json(movies); // Returns data for all movies in the database
