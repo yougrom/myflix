@@ -34,7 +34,7 @@ It's specifically crafted to provide comprehensive information about movies and 
 |                          | Register New User                    | POST   | `/users`                               | Registers a new user.                                |
 |                          | Add Movie to User's Favorites        | POST   | `/users/:Username/movies/:MovieID`     | Adds a movie to a user's list of favorites.          |
 |                          | Update User Information              | PUT    | `/users/:Username`                     | Updates user information.                            |
-|                          | Delete a Movie from User's Favorites | DELETE | `/users/:username/favoriteMovies/:_id` | Removes a movie from a user's favorites.             |
+|                          | Delete a Movie from User's Favorites | DELETE | `/users/:username/FavoriteMovies/:_id` | Removes a movie from a user's favorites.             |
 |                          | Delete User by Username              | DELETE | `/users/:Username`                     | Deletes a user from the database.                    |
 | **Directors and Genres** | Get Data About a Director by Name    | GET    | `/movies/Director/:Name`               | Retrieves detailed information about a director.     |
 
